@@ -155,11 +155,8 @@ function setupErrorHandler(app) {
     const server = await registerRoutes(app);
     setupErrorHandler(app);
     const port = parseInt(process.env.PORT || "5000", 10);
-    server.listen({
-        port,
-        host: "0.0.0.0",
-        reusePort: true,
-    }, () => {
-        log(`express server serving on port ${port}`);
+ server.listen(port, "0.0.0.0", () => {
+  console.log(`Servidor corriendo en puerto ${port}`);
+
     });
 })();
