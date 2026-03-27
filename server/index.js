@@ -1,5 +1,5 @@
 import express from "express";
-import { registerRoutes } from "./routes";
+import { registerRoutes } from "./routes.js";
 import * as fs from "fs";
 import * as path from "path";
 const app = express();
