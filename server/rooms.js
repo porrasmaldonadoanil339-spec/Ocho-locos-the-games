@@ -1,5 +1,14 @@
 import { Server as SocketServer } from "socket.io";
-import { initMultiGame, multiPlayCard, multiDraw, multiChooseSuit, multiGetTopCard, cpuPlayMulti, } from "../lib/multiplayerEngine.js";
+import pkg from "../lib/multiplayerEngine.js";
+
+const {
+  initMultiGame,
+  multiPlayCard,
+  multiDraw,
+  multiChooseSuit,
+  multiGetTopCard,
+  cpuPlayMulti
+} = pkg;
 const rooms = new Map();
 const matchmakingQueues = new Map();
 const DEFAULT_PROFILE = {
