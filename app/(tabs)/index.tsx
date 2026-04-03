@@ -401,13 +401,14 @@ function PokerTitle() {
     </View>
   );
 }
-const socket = io("https://ocho-locos-the-games.onrender.com");
+
 export default function PlayScreen() {
   const insets = useSafeAreaInsets();
   const { startGame } = useGame();
   const { profile, level, xpProgress, canClaimDailyReward, todaysDailyReward, claimDailyReward, watchAd, adsWatchedToday, adDailyLimit, isLoaded, addCoins, addXp, markTutorialSeen, chestInventory, openChestFromInventory } = useProfile();
   const [selectedMode, setSelectedMode] = useState<GameModeId | null>(null);
   const [showDiffModal, setShowDiffModal] = useState(false);
+  const [socket, setSocket] = useState(null);
   const [showDailyModal, setShowDailyModal] = useState(false);
   const [showModeInfo, setShowModeInfo] = useState(false);
   const [selectedModeForInfo, setSelectedModeForInfo] = useState<GameModeId | null>(null);
@@ -446,15 +447,25 @@ export default function PlayScreen() {
   }, [level, isLoaded]);
 
 useEffect(() => {
-  socket.on("connect", () => {
+  const newSocket = io("https://ocho-locos-the-games.onrender.com");
+
+  newSocket.on("connect", () => {
     console.log("🔥 Conectado al servidor");
   });
 
+  newSocket.on("connect_error", (err) => {
+    console.log("Error:", err);
+  });
+
+  setSocket(newSocket);
+
   return () => {
-    socket.off("connect");
+    newSocket.disconnect();
   };
 }, []);
-
+if (!socket) {
+  return <Text>Cargando...</Text>;
+}
   const handleClaimChallenge = async (id: string) => {
     const ch = challenges.find((c) => c.id === id);
     if (!ch || !ch.completed || ch.claimed) return;
